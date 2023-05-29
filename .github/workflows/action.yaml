@@ -1,0 +1,26 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "*"]
+  pull_request:
+    branches: [ "main" ]
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Ubuntu-build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository 
+        uses: actions/checkout@v3
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      - name: Build project
+        uses: nicledomaS/cmake_build_action@v1.4
+        with:
+          submodule_update: ON
+          run_tests: ON
+          unit_test_build: -Dtest=ON
